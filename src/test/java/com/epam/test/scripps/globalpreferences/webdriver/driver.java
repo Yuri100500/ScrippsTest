@@ -6,10 +6,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 /**
  * Created by Iurii_Galias on 5/14/15.
  */
-public class driver {
+public class Driver {
     public WebDriver getFirefoxInstance(){
         WebDriver driver = new FirefoxDriver();
         return driver;
     }
-
 }
