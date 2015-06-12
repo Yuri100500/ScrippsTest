@@ -10,7 +10,7 @@ import org.openqa.selenium.support.PageFactory;
  * Created by Iurii_Galias on 6/11/2015.
  */
 public class MainPage {
-    protected WebDriver driver;
+    protected static WebDriver driver;
 
     @FindBy(id = ".//*[@id='logo']")
     protected WebElement logo;
@@ -43,6 +43,11 @@ public MainPage(WebDriver driver){
 
     public void getUrl(String url){
         driver.get(url);
+    }
+
+    public ParentPage moveToParentPage(){
+        logo.click();
+        return PageFactory.initElements(driver, ParentPage.class);
     }
 
 }
