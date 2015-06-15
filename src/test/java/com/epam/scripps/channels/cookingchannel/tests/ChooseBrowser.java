@@ -4,16 +4,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
-
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Iurii_Galias on 6/11/2015.
  */
-public class ChooseBrowser {
+public class ChooseBrowser
+{
     protected static WebDriver driver;
 
-    protected static WebDriver getDriver(){
+    protected static WebDriver getDriver()
+    {
 
         if (driver == null){
             driver = chooseDriver();
@@ -22,26 +23,30 @@ public class ChooseBrowser {
         }
         return driver;
     }
-    private static WebDriver chooseDriver(){
+    private static WebDriver chooseDriver()
+    {
         String browser = java.lang.System.getProperties().getProperty("webbrowser");
 
-        if (browser == null) {
+        if (browser == null)
+        {
             browser = "firefox";
         }
-        if (browser.equalsIgnoreCase("firefox")){
+        if (browser.equalsIgnoreCase("firefox"))
+        {
             driver = new FirefoxDriver();
         }
         return driver;
     }
 
     @BeforeClass
-    public void preparation(){
+    public void preparation()
+    {
         driver = getDriver();
     }
+
     @AfterSuite
-    public void tearDown(){
+    public void tearDown()
+    {
         driver.quit();
     }
-
-
 }

@@ -9,10 +9,11 @@ import org.openqa.selenium.support.PageFactory;
 /**
  * Created by Iurii_Galias on 6/11/2015.
  */
-public class MainPage {
+public class MainPage
+{
     protected static WebDriver driver;
 
-    @FindBy(id = ".//*[@id='logo']")
+    @FindBy(id = "logo")
     protected WebElement logo;
 
     @FindBy(xpath = "//*[contains(text(),'Full Episodes')]")
@@ -36,18 +37,31 @@ public class MainPage {
     @FindBy(className = "//*[contains(text(),'More Videos')]")
     protected WebElement moreVideosButton;
 
-public MainPage(WebDriver driver){
+public MainPage(WebDriver driver)
+{
     this.driver = driver;
     PageFactory.initElements(driver, this);
 }
 
-    public void getUrl(String url){
+    public void getUrl(String url)
+    {
         driver.get(url);
     }
 
-    public ParentPage moveToParentPage(){
+    public ParentPage moveToParentPage()
+    {
         logo.click();
         return PageFactory.initElements(driver, ParentPage.class);
+    }
+
+    public void moveToMainPage()
+    {
+        fullEpisodesButton.click();
+    }
+
+    public static String mainPageCheck()
+    {
+        return driver.getCurrentUrl();
     }
 
 }

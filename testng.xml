@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://beust.com/testng/testng-1.0.dtd" >
+<suite name="ScrippsTestTestSuite">
+
+    <test name="HeaderTests" preserve-order="true">
+        <classes>
+            <class name="com.epam.scripps.channels.cookingchannel.tests.HeaderTest" />
+        </classes>
+    </test>
+</suite>
