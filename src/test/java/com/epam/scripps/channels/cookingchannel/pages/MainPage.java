@@ -2,6 +2,7 @@ package com.epam.scripps.channels.cookingchannel.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -14,18 +15,21 @@ public class MainPage
     protected static WebDriver driver;
 
     @FindBy(id = "logo")
-    protected WebElement logo;
+    protected  WebElement logo;
 
     @FindBy(xpath = "//*[contains(text(),'Full Episodes')]")
-    protected WebElement fullEpisodesButton;
+    protected  WebElement fullEpisodesButton;
 
-    @FindBy(xpath = "//*[contains(text(),'Select a Show')]")
-    protected WebElement selectAshowButton;
+    @FindBy(xpath = "//*[contains(text(),'Shows')]")
+    protected  WebElement showButton;
+
+    @FindBy(xpath = ".//*[@id='showsWrapper']/ul[1]/li[1]/a")
+    protected WebElement firstShows;
 
     @FindBy(xpath = "//*[contains(text(),'LIVE TV')]")
     protected WebElement liveTvButton;
 
-    @FindBy(id = ".//*[@id='logIn']")
+    @FindBy(id = "logIn")
     protected WebElement signInButton;
 
     @FindBy(className = ".//*[@class = \'rsArrowIcn ss-navigateright\']")
@@ -62,6 +66,13 @@ public MainPage(WebDriver driver)
     public static String mainPageCheck()
     {
         return driver.getCurrentUrl();
+    }
+
+    public  void hoverAndClick()
+    {
+        Actions action = new Actions(driver);
+        action.moveToElement(showButton).build().perform();
+        firstShows.click();
     }
 
 }
