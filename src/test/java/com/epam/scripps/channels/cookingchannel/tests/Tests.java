@@ -1,6 +1,8 @@
 package com.epam.scripps.channels.cookingchannel.tests;
 
 import com.epam.scripps.channels.cookingchannel.pages.*;
+import com.epam.scripps.channels.cookingchannel.pages.authentication.ProvidersPopUp;
+import com.epam.scripps.channels.cookingchannel.providers.OptimumPage;
 import com.epam.scripps.utils.Consts;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,7 +12,7 @@ import org.testng.annotations.Test;
  */
 public class Tests extends PreparingConfiguration
 {
-/*
+
     @Test(description = "Check that channel logo navigates correct", priority = 1)
     public void movingToParentPage()
     {
@@ -50,13 +52,17 @@ public class Tests extends PreparingConfiguration
         LiveTvPage liveTvPage = mainPage.moveToLiveTvPage();
         Assert.assertEquals(LiveTvPage.checkUrl(),Consts.LIVE_TV_PAGE_URL, "Incorrect URL");
         Assert.assertEquals(liveTvPage.liveTvPageChecking(),true, "You are on the wrong page");
-    }*/
+    }
 
-    @Test(description = "check navigation in lead carousel in the left", priority = 5)
+    @Test(description = "authorization on the site using Optimum provider", priority = 5)
     public void clickOnLeftButton()
     {
         MainPage mainPage = new MainPage(getDriver());
         mainPage.getUrl(environment);
-        mainPage.chooseOptimum();
+        ProvidersPopUp signInPopUp = mainPage.openPopUp();
+        OptimumPage enterCredentials = signInPopUp.chooseOptimum();
+        enterCredentials.enterOptimumCredentials(optName,optPass);
+        Assert.assertEquals(MainPage.checkUrl(), Consts.HOME_PAGE_URL, "Incorrect URL");
+        Assert.assertEquals(mainPage.mainPageChecking(), true,"You are on the wrong page");
     }
 }

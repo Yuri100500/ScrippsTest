@@ -1,12 +1,12 @@
 package com.epam.scripps.channels.cookingchannel.pages;
 
+import com.epam.scripps.channels.cookingchannel.pages.authentication.ProvidersPopUp;
 import com.epam.scripps.utils.Utils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
 
 
 /**
@@ -46,7 +46,7 @@ public class MainPage
     @FindBy(className = "//*[contains(text(),'More Videos')]")
     protected WebElement moreVideosButton;
 
-    @FindBy(xpath = ".//*[contains(text(), 'Optimum')]")
+    @FindBy(xpath = ".//*[@id='mCSB_1_container']/ul[1]/li[1]/div/img")
     protected WebElement optimumProvider;
 
     //====================================================================
@@ -107,12 +107,9 @@ public MainPage(WebDriver driver)
         return PageFactory.initElements(driver, LiveTvPage.class);
     }
 
-    public void chooseOptimum()
+    public ProvidersPopUp openPopUp()
     {
         signInButton.click();
-        PageFactory.initElements(driver, MainPage.class);
-        driver.switchTo().frame("authOverlay");
-        optimumProvider.click();
-
+        return PageFactory.initElements(driver, ProvidersPopUp.class);
     }
 }

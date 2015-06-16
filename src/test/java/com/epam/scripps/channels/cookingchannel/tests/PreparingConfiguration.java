@@ -15,6 +15,8 @@ public class PreparingConfiguration
     protected static WebDriver driver;
 
     protected static String environment = ConfigReader.getStringFromFile("dev.env");
+    protected static String optName = ConfigReader.getStringFromFile("opt.name");
+    protected static String optPass = ConfigReader.getStringFromFile("opt.pass");
 
     protected static WebDriver getDriver()
     {
@@ -48,9 +50,9 @@ public class PreparingConfiguration
         driver = getDriver();
     }
 
-/*    @AfterSuite
+    @AfterSuite
     public void tearDown()
     {
         driver.quit();
-    }*/
+    }
 }
