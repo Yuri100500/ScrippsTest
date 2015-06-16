@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
  */
 public class Tests extends PreparingConfiguration
 {
-
+/*
     @Test(description = "Check that channel logo navigates correct", priority = 1)
     public void movingToParentPage()
     {
@@ -50,5 +50,13 @@ public class Tests extends PreparingConfiguration
         LiveTvPage liveTvPage = mainPage.moveToLiveTvPage();
         Assert.assertEquals(LiveTvPage.checkUrl(),Consts.LIVE_TV_PAGE_URL, "Incorrect URL");
         Assert.assertEquals(liveTvPage.liveTvPageChecking(),true, "You are on the wrong page");
+    }*/
+
+    @Test(description = "check navigation in lead carousel in the left", priority = 5)
+    public void clickOnLeftButton()
+    {
+        MainPage mainPage = new MainPage(getDriver());
+        mainPage.getUrl(environment);
+        mainPage.chooseOptimum();
     }
 }

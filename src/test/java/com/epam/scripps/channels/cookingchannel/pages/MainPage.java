@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 
 /**
@@ -36,14 +37,17 @@ public class MainPage
     @FindBy(id = "leadCarousel")
     protected WebElement leadCarousel;
 
-    @FindBy(className = ".//*[@class = \'rsArrowIcn ss-navigateright\']")
+    @FindBy(className = "rsArrowIcn ss-navigateright")
     protected WebElement mainCarouselNavigationRight;
 
-    @FindBy(className = ".//*[@class = \'rsArrowIcn ss-navigateleft\']")
+    @FindBy(className = "rsArrowIcn ss-navigateleft")
     protected WebElement mainCarouselNavigationLeft;
 
     @FindBy(className = "//*[contains(text(),'More Videos')]")
     protected WebElement moreVideosButton;
+
+    @FindBy(xpath = ".//*[contains(text(), 'Optimum')]")
+    protected WebElement optimumProvider;
 
     //====================================================================
 
@@ -64,6 +68,11 @@ public MainPage(WebDriver driver)
     public  boolean mainPageChecking()
     {
         return Utils.isElementPresent(leadCarousel);
+    }
+
+    public boolean signInChecking()
+    {
+        return Utils.isElementPresent(signInButton);
     }
 
     public void getUrl(String url)
@@ -98,4 +107,12 @@ public MainPage(WebDriver driver)
         return PageFactory.initElements(driver, LiveTvPage.class);
     }
 
+    public void chooseOptimum()
+    {
+        signInButton.click();
+        PageFactory.initElements(driver, MainPage.class);
+        driver.switchTo().frame("authOverlay");
+        optimumProvider.click();
+
+    }
 }

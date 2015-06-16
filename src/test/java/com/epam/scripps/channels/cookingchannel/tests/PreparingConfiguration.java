@@ -48,9 +48,9 @@ public class PreparingConfiguration
         driver = getDriver();
     }
 
-    @AfterSuite
+/*    @AfterSuite
     public void tearDown()
     {
         driver.quit();
-    }
+    }*/
 }
