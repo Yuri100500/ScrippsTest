@@ -1,5 +1,6 @@
 package com.epam.scripps.channels.cookingchannel.pages;
 
+import com.epam.scripps.utils.Utils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -32,6 +33,9 @@ public class MainPage
     @FindBy(id = "logIn")
     protected WebElement signInButton;
 
+    @FindBy(id = "leadCarousel")
+    protected WebElement leadCarousel;
+
     @FindBy(className = ".//*[@class = \'rsArrowIcn ss-navigateright\']")
     protected WebElement mainCarouselNavigationRight;
 
@@ -41,11 +45,26 @@ public class MainPage
     @FindBy(className = "//*[contains(text(),'More Videos')]")
     protected WebElement moreVideosButton;
 
+    //====================================================================
+
 public MainPage(WebDriver driver)
 {
     this.driver = driver;
     PageFactory.initElements(driver, this);
 }
+    //==================================================================== static methods
+
+    public static String checkUrl()
+    {
+        return driver.getCurrentUrl();
+    }
+
+    //==================================================================== other methods
+
+    public  boolean mainPageChecking()
+    {
+        return Utils.isElementPresent(leadCarousel);
+    }
 
     public void getUrl(String url)
     {
@@ -58,21 +77,25 @@ public MainPage(WebDriver driver)
         return PageFactory.initElements(driver, ParentPage.class);
     }
 
-    public void moveToMainPage()
+    public MainPage moveToMainPage()
     {
         fullEpisodesButton.click();
+        return PageFactory.initElements(driver,MainPage.class);
     }
 
-    public static String mainPageCheck()
-    {
-        return driver.getCurrentUrl();
-    }
 
-    public  void hoverAndClick()
+    public  PlayerPage moveToPlayerPage()
     {
         Actions action = new Actions(driver);
         action.moveToElement(showButton).build().perform();
         firstShows.click();
+        return PageFactory.initElements(driver,PlayerPage.class);
+    }
+
+    public LiveTvPage moveToLiveTvPage()
+    {
+        liveTvButton.click();
+        return PageFactory.initElements(driver, LiveTvPage.class);
     }
 
 }

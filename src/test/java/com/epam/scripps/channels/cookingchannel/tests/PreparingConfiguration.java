@@ -1,5 +1,6 @@
 package com.epam.scripps.channels.cookingchannel.tests;
 
+import com.epam.scripps.utils.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterSuite;
@@ -9,9 +10,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Iurii_Galias on 6/11/2015.
  */
-public class ChooseBrowser
+public class PreparingConfiguration
 {
     protected static WebDriver driver;
+
+    protected static String environment = ConfigReader.getStringFromFile("dev.env");
 
     protected static WebDriver getDriver()
     {
@@ -23,6 +26,7 @@ public class ChooseBrowser
         }
         return driver;
     }
+
     private static WebDriver chooseDriver()
     {
         String browser = java.lang.System.getProperties().getProperty("webbrowser");
