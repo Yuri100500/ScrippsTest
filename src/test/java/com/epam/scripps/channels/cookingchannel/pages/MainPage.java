@@ -34,6 +34,9 @@ public class MainPage
     @FindBy(id = "logIn")
     protected WebElement signInButton;
 
+    @FindBy(className = "icon-auth-required")
+    protected WebElement iconKey;
+
     @FindBy(id = "leadCarousel")
     protected WebElement leadCarousel;
 
@@ -43,11 +46,14 @@ public class MainPage
     @FindBy(className = "rsArrowIcn ss-navigateleft")
     protected WebElement mainCarouselNavigationLeft;
 
-    @FindBy(className = "//*[contains(text(),'More Videos')]")
+    @FindBy(xpath = "//*[contains(text(),'More Videos')]")
     protected WebElement moreVideosButton;
 
-    @FindBy(xpath = ".//*[@id='mCSB_1_container']/ul[1]/li[1]/div/img")
-    protected WebElement optimumProvider;
+    @FindBy(xpath = ".//*[@id='mvpd-logo-href']/img")
+    protected WebElement optimumLogo;
+
+    @FindBy(id = "logOut")
+    protected WebElement signOutButton;
 
     //====================================================================
 
@@ -72,7 +78,14 @@ public MainPage(WebDriver driver)
 
     public boolean signInChecking()
     {
+        Utils.waitForElementPresent(driver,signInButton, 15, 5);
         return Utils.isElementPresent(signInButton);
+    }
+
+    public boolean isAuthorized()
+    {
+        Utils.waitForElementPresent(driver, optimumLogo, 15, 5);
+        return Utils.isElementPresent(optimumLogo);
     }
 
     public void getUrl(String url)
@@ -111,5 +124,10 @@ public MainPage(WebDriver driver)
     {
         signInButton.click();
         return PageFactory.initElements(driver, ProvidersPopUp.class);
+    }
+
+    public void signOut()
+    {
+        signOutButton.click();
     }
 }

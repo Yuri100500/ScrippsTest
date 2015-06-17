@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 /**
  * Created by Iurii_Galias on 6/11/2015.
  */
-public class Tests extends PreparingConfiguration
+public class HeaderTests extends PreparingConfiguration
 {
 
     @Test(description = "Check that channel logo navigates correct", priority = 1)
@@ -55,7 +55,7 @@ public class Tests extends PreparingConfiguration
     }
 
     @Test(description = "authorization on the site using Optimum provider", priority = 5)
-    public void clickOnLeftButton()
+    public void signInChecking()
     {
         MainPage mainPage = new MainPage(getDriver());
         mainPage.getUrl(environment);
@@ -63,6 +63,15 @@ public class Tests extends PreparingConfiguration
         OptimumPage enterCredentials = signInPopUp.chooseOptimum();
         enterCredentials.enterOptimumCredentials(optName,optPass);
         Assert.assertEquals(MainPage.checkUrl(), Consts.HOME_PAGE_URL, "Incorrect URL");
-        Assert.assertEquals(mainPage.mainPageChecking(), true,"You are on the wrong page");
+        Assert.assertTrue(mainPage.isAuthorized(), "The key is present on the page, Somethings wrong with authorization");
+    }
+
+    @Test(dependsOnMethods ="signInChecking", description = "sign out on main page")
+    public void signOutChecking()
+    {
+        MainPage mainPage = new MainPage(getDriver());
+        mainPage.getUrl(environment);
+        mainPage.signOut();
+        Assert.assertTrue(mainPage.signInChecking(),"The sign in button is absent !!!!");
     }
 }

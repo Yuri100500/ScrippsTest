@@ -23,7 +23,7 @@ public class PreparingConfiguration
 
         if (driver == null){
             driver = chooseDriver();
-            driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS).pageLoadTimeout(15,TimeUnit.SECONDS);
             driver.manage().window().maximize();
         }
         return driver;
@@ -50,9 +50,9 @@ public class PreparingConfiguration
         driver = getDriver();
     }
 
-    @AfterSuite
+/*    @AfterSuite
     public void tearDown()
     {
         driver.quit();
-    }
+    }*/
 }
