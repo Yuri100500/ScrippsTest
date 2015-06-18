@@ -13,11 +13,11 @@ import org.testng.annotations.Test;
 public class HeaderTests extends PreparingConfiguration
 {
 
-    @Test(description = "Check that channel logo navigates correct", priority = 1)
+   /* @Test(description = "Check that channel logo navigates correct", priority = 1)
     public void movingToParentPage()
     {
         MainPage mainPage = new MainPage(getDriver());
-        mainPage.getUrl(environment);
+        mainPage.getUrl(home);
         mainPage.moveToParentPage();
         Assert.assertEquals(ParentPage.checkUrl(), Consts.PARENT_PAGE_URL, "Incorrect URL");
         Assert.assertEquals(ParentPage.parentPageChecking(), true, "You are on the wrong page");
@@ -27,7 +27,7 @@ public class HeaderTests extends PreparingConfiguration
     public void movingToMainPage()
     {
         MainPage mainPage = new MainPage(getDriver());
-        mainPage.getUrl(environment);
+        mainPage.getUrl(home);
         mainPage.moveToMainPage();
         mainPage.mainPageChecking();
         Assert.assertEquals(MainPage.checkUrl(),Consts.HOME_PAGE_URL, "Incorrect URL");
@@ -38,7 +38,7 @@ public class HeaderTests extends PreparingConfiguration
     public void movingToPlayerPage()
     {
         MainPage mainPage = new MainPage(getDriver());
-        mainPage.getUrl(environment);
+        mainPage.getUrl(home);
         PlayerPage playerPage = mainPage.moveToPlayerPage();
         Assert.assertEquals(PlayerPage.checkUrl(),Consts.PLAYER_PAGE_CCJFF_SHOW_URL, "Incorrect URL");
         Assert.assertEquals(playerPage.playerPageChecking(), true,"You are on the wrong page");
@@ -48,7 +48,7 @@ public class HeaderTests extends PreparingConfiguration
     public void movingToLiveTvPage()
     {
         MainPage mainPage = new MainPage(getDriver());
-        mainPage.getUrl(environment);
+        mainPage.getUrl(home);
         LiveTvPage liveTvPage = mainPage.moveToLiveTvPage();
         Assert.assertEquals(LiveTvPage.checkUrl(),Consts.LIVE_TV_PAGE_URL, "Incorrect URL");
         Assert.assertEquals(liveTvPage.liveTvPageChecking(),true, "You are on the wrong page");
@@ -58,20 +58,20 @@ public class HeaderTests extends PreparingConfiguration
     public void signInChecking()
     {
         MainPage mainPage = new MainPage(getDriver());
-        mainPage.getUrl(environment);
+        mainPage.getUrl(home);
         ProvidersPopUp signInPopUp = mainPage.openPopUp();
         OptimumPage enterCredentials = signInPopUp.chooseOptimum();
         enterCredentials.enterOptimumCredentials(optName,optPass);
         Assert.assertEquals(MainPage.checkUrl(), Consts.HOME_PAGE_URL, "Incorrect URL");
-        Assert.assertTrue(mainPage.isAuthorized(), "The key is present on the page, Somethings wrong with authorization");
+        Assert.assertTrue(mainPage.isAuthorized(), "Providers logo is present on the page, Somethings wrong with authorization");
     }
 
     @Test(dependsOnMethods ="signInChecking", description = "sign out on main page")
     public void signOutChecking()
     {
         MainPage mainPage = new MainPage(getDriver());
-        mainPage.getUrl(environment);
+        mainPage.getUrl(home);
         mainPage.signOut();
         Assert.assertTrue(mainPage.signInChecking(),"The sign in button is absent !!!!");
-    }
+    }*/
 }

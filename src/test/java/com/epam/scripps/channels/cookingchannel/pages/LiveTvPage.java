@@ -13,6 +13,8 @@ public class LiveTvPage extends MainPage
     @FindBy(className = "live-player-overlay-play-button")
     protected WebElement livePlayerOverlay;
 
+//========================================================
+
     public LiveTvPage(WebDriver driver)
     {
         super(driver);
@@ -22,4 +24,5 @@ public class LiveTvPage extends MainPage
     {
         return Utils.isElementPresent(livePlayerOverlay);
     }
+
 }

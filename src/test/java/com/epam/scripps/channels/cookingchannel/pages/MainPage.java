@@ -79,7 +79,7 @@ public MainPage(WebDriver driver)
     public boolean signInChecking()
     {
         Utils.waitForElementPresent(driver,signInButton, 15, 5);
-        return Utils.isElementPresent(signInButton);
+        return Utils.isElementPresent(signInButton) && Utils.isElementPresent(iconKey);
     }
 
     public boolean isAuthorized()

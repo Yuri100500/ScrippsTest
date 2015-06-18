@@ -3,7 +3,6 @@ package com.epam.scripps.channels.cookingchannel.tests;
 import com.epam.scripps.utils.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import java.util.concurrent.TimeUnit;
 
@@ -14,7 +13,8 @@ public class PreparingConfiguration
 {
     protected static WebDriver driver;
 
-    protected static String environment = ConfigReader.getStringFromFile("dev.env");
+    protected static String home = ConfigReader.getStringFromFile("dev.env.home");
+    protected static String liveTv = ConfigReader.getStringFromFile("dev.env.live");
     protected static String optName = ConfigReader.getStringFromFile("opt.name");
     protected static String optPass = ConfigReader.getStringFromFile("opt.pass");
 
