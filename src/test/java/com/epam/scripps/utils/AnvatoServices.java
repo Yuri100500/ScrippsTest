@@ -9,13 +9,17 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Iurii_Galias on 6/18/2015.
  */
 public class AnvatoServices
 {
-    public boolean checkingMetadataOfflineService(String programTitle, String episodeName, String programDescription)
+    public static void checkingMetadataOfflineService(String programTitle, String episodeName, String programDescription)
     {
         String response = "";
         HttpClient client = new DefaultHttpClient();
@@ -37,20 +41,13 @@ public class AnvatoServices
             e.printStackTrace();
         }
 
-        JSONObject res = new JSONObject(response);
-        Object anvatoProgramTitle = res.getJSONObject("schedule").getJSONObject("current_event").getString("title");
-        Object anvatoEpisodeName = res.getJSONObject("schedule").getJSONObject("current_event").getJSONObject("custom_metadata").getJSONObject("22").getString("value");
-        Object anvatoProgramDescription = res.getJSONObject("schedule").getJSONObject("current_event").getJSONObject("custom_metadata").getJSONObject("27").getString("value");
-        //Object d = res.getJSONObject("schedule").getJSONObject("current_event").getJSONArray("custom_metadata");
-        //System.out.println(response);
-        //System.out.println(d);
+        Iterator<String> res = new JSONObject(response).getJSONObject("schedule").getJSONObject("current_event").getJSONObject("custom_metadata").keys();
+        JSONObject customMetaData = new JSONObject(response).getJSONObject("schedule").getJSONObject("current_event").getJSONObject("custom_metadata");
 
-        System.out.println("Show: "+ anvatoProgramTitle +"\n" +"Serial: " + anvatoEpisodeName +"\n"+ "Description: "+ anvatoProgramDescription);
-
-        if (programTitle == anvatoProgramTitle && episodeName == anvatoEpisodeName && programDescription == anvatoProgramDescription)
+        while (res.hasNext())
         {
-            return true;
+            String key = res.next();
+            customMetaData.getJSONObject(key);
         }
-        return false;
     }
 }
