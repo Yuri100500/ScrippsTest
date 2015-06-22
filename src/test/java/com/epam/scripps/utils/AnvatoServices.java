@@ -9,17 +9,14 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Iurii_Galias on 6/18/2015.
  */
 public class AnvatoServices
 {
-    public static void checkingMetadataOfflineService(String programTitle, String episodeName, String programDescription)
+    public static void checkingMetadataOfflineService()
     {
         String response = "";
         HttpClient client = new DefaultHttpClient();
@@ -40,7 +37,7 @@ public class AnvatoServices
         {
             e.printStackTrace();
         }
-
+        //String a = new JSONObject(response).getJSONObject("schedule").getString("title");
         Iterator<String> res = new JSONObject(response).getJSONObject("schedule").getJSONObject("current_event").getJSONObject("custom_metadata").keys();
         JSONObject customMetaData = new JSONObject(response).getJSONObject("schedule").getJSONObject("current_event").getJSONObject("custom_metadata");
 
@@ -48,6 +45,19 @@ public class AnvatoServices
         {
             String key = res.next();
             customMetaData.getJSONObject(key);
+            JSONObject resultSet = customMetaData.getJSONObject(key);
+            resultSet.keys();
         }
+    }
+
+    private static String searchResult(List<JSONObject> anvatoSearchResult, String searchCriteria)
+    {
+        for (JSONObject jsonObject : anvatoSearchResult)
+        {
+            if (jsonObject.getString("name").equals(searchCriteria))
+            {
+                return searchCriteria;
+            }
+        }return searchCriteria;
     }
 }

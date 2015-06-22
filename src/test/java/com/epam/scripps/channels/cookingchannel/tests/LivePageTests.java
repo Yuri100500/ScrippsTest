@@ -2,6 +2,7 @@ package com.epam.scripps.channels.cookingchannel.tests;
 
 
 
+import com.epam.scripps.channels.cookingchannel.pages.LiveTvPage;
 import com.epam.scripps.channels.cookingchannel.pages.MainPage;
 import com.epam.scripps.channels.cookingchannel.pages.authentication.ProvidersPopUp;
 import com.epam.scripps.channels.cookingchannel.providers.OptimumPage;
@@ -27,7 +28,7 @@ import java.util.Objects;
 /**
  * Created by Iurii_Galias on 6/17/2015.
  */
-public class LivePageTests
+public class LivePageTests extends PreparingConfiguration
 {
 /*    @Test()
     public void checkAuthorization()
@@ -44,6 +45,8 @@ public class LivePageTests
     @Test
     public void checkAnvatoOfflineService()
     {
-        AnvatoServices.checkingMetadataOfflineService("", "", "");
+/*        LiveTvPage liveTvPage  = new LiveTvPage(getDriver());
+        liveTvPage.getUrl(liveTv);*/
+        AnvatoServices.checkingMetadataOfflineService();
     }
 }

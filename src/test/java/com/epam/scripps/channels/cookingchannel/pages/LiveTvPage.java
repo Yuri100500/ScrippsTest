@@ -13,6 +13,16 @@ public class LiveTvPage extends MainPage
     @FindBy(className = "live-player-overlay-play-button")
     protected WebElement livePlayerOverlay;
 
+    @FindBy(id = "program-title")
+    protected WebElement liveTitleName;
+
+    @FindBy(xpath = ".//*[@id='additional-program-desc']/span[1]")
+    protected WebElement liveEpisodeName;
+
+    @FindBy(id = "program-desc")
+    protected WebElement liveDescriptionName;
+
+
 //========================================================
 
     public LiveTvPage(WebDriver driver)
@@ -25,4 +35,18 @@ public class LiveTvPage extends MainPage
         return Utils.isElementPresent(livePlayerOverlay);
     }
 
+    public String getLiveTitleName()
+    {
+        return liveTitleName.getText();
+    }
+
+    public String getLiveEpisodeName()
+    {
+        return liveEpisodeName.getText();
+    }
+
+    public String getLiveDescriptionName()
+    {
+        return liveDescriptionName.getText();
+    }
 }
