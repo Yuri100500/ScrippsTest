@@ -3,26 +3,15 @@ package com.epam.scripps.channels.cookingchannel.tests;
 
 
 import com.epam.scripps.channels.cookingchannel.pages.LiveTvPage;
-import com.epam.scripps.channels.cookingchannel.pages.MainPage;
 import com.epam.scripps.channels.cookingchannel.pages.authentication.ProvidersPopUp;
 import com.epam.scripps.channels.cookingchannel.providers.OptimumPage;
 import com.epam.scripps.utils.AnvatoServices;
-import com.epam.scripps.utils.Consts;
-import com.google.gson.JsonObject;
-import netscape.javascript.JSObject;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Objects;
+import java.util.List;
 
 
 /**
@@ -30,6 +19,7 @@ import java.util.Objects;
  */
 public class LivePageTests extends PreparingConfiguration
 {
+    List<JSONObject> allMetadata;
 /*    @Test()
     public void checkAuthorization()
     {
@@ -42,11 +32,53 @@ public class LivePageTests extends PreparingConfiguration
         Assert.assertTrue(mainPage.isAuthorized(), "Providers logo is present on the page, Somethings wrong with authorization");
     }*/
 
-    @Test
+    @BeforeTest
+    public void getMetadata()
+    {
+        allMetadata = AnvatoServices.allMetadataOffline();
+    }
+
+/*    @Test
     public void checkAnvatoOfflineService()
     {
-/*        LiveTvPage liveTvPage  = new LiveTvPage(getDriver());
-        liveTvPage.getUrl(liveTv);*/
-        AnvatoServices.checkingMetadataOfflineService();
+        LiveTvPage liveTvPage  = new LiveTvPage(getDriver());
+        liveTvPage.getUrl(liveTv);
+        String programTitle = AnvatoServices.getMetadataByName(allMetadata, "title");
+        String upNextTitle = AnvatoServices.getMetadataByName(allMetadata, "next");
+        String programDescription = AnvatoServices.getMetadataByName(allMetadata, "rovi_long_description");
+
+        String episodeName = AnvatoServices.getMetadataByName(allMetadata, "rovi_episode_title");
+        if (episodeName != null && episodeName.equals(""))
+        {
+            episodeName = AnvatoServices.getMetadataByName(allMetadata, "rovi_long_title");
+        }
+
+        Assert.assertEquals(programTitle,liveTvPage.getLiveTitleName());
+        Assert.assertEquals(upNextTitle,liveTvPage.getUpNextTitle(), "Incorrect Up Next title");
+        Assert.assertEquals(episodeName,liveTvPage.getLiveEpisodeName(), "Incorrect episode name");
+        Assert.assertEquals(programDescription,liveTvPage.getLiveDescriptionName(), "Incorrect description of the episode");
+    }*/
+
+    @Test
+    public void checkAnvatoOnlineService()
+    {
+        LiveTvPage liveTvPage = new LiveTvPage(getDriver());
+        liveTvPage.getUrl(liveTv);
+
+        ProvidersPopUp signInPopUp = liveTvPage.openPopUp();
+        OptimumPage enterCredentials = signInPopUp.chooseOptimum();
+        enterCredentials.enterOptimumCredentials(optName,optPass);
+
+        String eventId = AnvatoServices.getMetadataByName(allMetadata, "event");
+        AnvatoServices.allMetadataOnline(eventId);
+
+        String programTitleOnline = AnvatoServices.getMetadataByName(allMetadata, "def_title");
+        String episodeNameOnline = AnvatoServices.getMetadataByName(allMetadata, "rovi_episode_title");
+        String episodeDescriptionOnline = AnvatoServices.getMetadataByName(allMetadata, "rovi_long_description");
+
+        Assert.assertEquals(programTitleOnline,liveTvPage.getLiveTitleName());
+        Assert.assertEquals(episodeNameOnline,liveTvPage.getLiveEpisodeName());
+        Assert.assertEquals(episodeDescriptionOnline,liveTvPage.getLiveDescriptionName());
+
     }
 }

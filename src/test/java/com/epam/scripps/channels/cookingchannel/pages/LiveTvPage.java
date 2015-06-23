@@ -22,6 +22,9 @@ public class LiveTvPage extends MainPage
     @FindBy(id = "program-desc")
     protected WebElement liveDescriptionName;
 
+    @FindBy(className = "live-page-upnext-thumbnail-title")
+    protected WebElement livePageUpNextTitle;
+
 
 //========================================================
 
@@ -48,5 +51,10 @@ public class LiveTvPage extends MainPage
     public String getLiveDescriptionName()
     {
         return liveDescriptionName.getText();
+    }
+
+    public String getUpNextTitle()
+    {
+        return livePageUpNextTitle.getText();
     }
 }
