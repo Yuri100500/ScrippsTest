@@ -3,6 +3,7 @@ package com.epam.scripps.channels.cookingchannel.tests;
 import com.epam.scripps.utils.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import java.util.concurrent.TimeUnit;
 
@@ -50,9 +51,9 @@ public class PreparingConfiguration
         driver = getDriver();
     }
 
-/*    @AfterSuite
+    @AfterSuite
     public void tearDown()
     {
         driver.quit();
-    }*/
+    }
 }

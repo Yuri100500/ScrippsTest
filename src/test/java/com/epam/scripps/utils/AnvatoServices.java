@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -18,6 +17,7 @@ import java.util.*;
  */
 public class AnvatoServices
 {
+    private static String eventId;
     public static List<JSONObject> allMetadataOffline()
     {
         List<JSONObject> results = new ArrayList<JSONObject>();
@@ -41,17 +41,15 @@ public class AnvatoServices
             e.printStackTrace();
         }
 
-        String eventId = new JSONObject(response).getJSONObject("schedule").getJSONObject("current_event").getString("event_id");
-        String prepareEventId = "{\"name\":\"event\",\"value\":\"" + eventId + "\"}";
-        JSONObject eventIdJSON = new JSONObject(prepareEventId);
+        eventId = new JSONObject(response).getJSONObject("schedule").getJSONObject("current_event").getString("event_id");
 
         String programTitle = new JSONObject(response).getJSONObject("schedule").getJSONObject("current_event").getString("title");
-        String prepareProgramTitle = "{\"name\":\"title\",\"value\":\"" + programTitle + "\"}";
-        JSONObject programTitleJSON = new JSONObject(prepareProgramTitle);
 
-        String upNextTitle = new JSONObject(response).getJSONObject("schedule").getJSONObject("next_event").getString("title");
+        /*String upNextTitle = new JSONObject(response).getJSONObject("schedule").getJSONObject("next_event").getString("title");
         String prepareUpNextTitle = "{\"name\":\"next\",\"value\":\"" + upNextTitle + "\"}";
-        JSONObject upNextTitleJSON = new JSONObject(prepareUpNextTitle);
+        JSONObject upNextTitleJSON = new JSONObject(prepareUpNextTitle);*/
+
+
 
         Iterator<String> res = new JSONObject(response).getJSONObject("schedule").getJSONObject("current_event").getJSONObject("custom_metadata").keys();
         JSONObject customMetaData = new JSONObject(response).getJSONObject("schedule").getJSONObject("current_event").getJSONObject("custom_metadata");
@@ -64,9 +62,35 @@ public class AnvatoServices
             results.add(resultSet);
         }
 
-        results.add(eventIdJSON);
-        results.add(programTitleJSON);
+        if(!programTitle.equals("Paid Programming") && "Paid For".equals(getMetadataByName(results,"rovi_programming_show_type")))
+        {
+            programTitle = "Paid Programming";
+            String prepareProgramTitle = "{\"name\":\"title\",\"value\":\"" + programTitle + "\"}";
+            JSONObject programTitleJSON = new JSONObject(prepareProgramTitle);
+            results.add(programTitleJSON);
+        }
+        else
+        {
+            String prepareProgramTitle = "{\"name\":\"title\",\"value\":\"" + programTitle + "\"}";
+            JSONObject programTitleJSON = new JSONObject(prepareProgramTitle);
+            results.add(programTitleJSON);
+        }
+        if ("".equals(getMetadataByName(results,"rovi_episode_title")))
+        {
+            String episodeName = programTitle;
+            String prepareEpisodeName = "{\"name\":\"rovi_episode_title\",\"value\":\"" + episodeName + "\"}";
+            JSONObject episodeNameJSON = new JSONObject(prepareEpisodeName);
+            results.add(episodeNameJSON);
+        }
+        String upNext = getUpNextMetadata(response);
+        String prepareUpNextTitle = "{\"name\":\"next\",\"value\":\"" + upNext + "\"}";
+        JSONObject upNextTitleJSON = new JSONObject(prepareUpNextTitle);
         results.add(upNextTitleJSON);
+
+        //==========================================================================================================================================================
+
+
+        //results.add(upNextTitleJSON);
 
         return results;
     }
@@ -86,12 +110,16 @@ public class AnvatoServices
         }return result;
     }
 
-    public static List<JSONObject> allMetadataOnline(String showName)
+
+//===============================================================================================
+
+
+    public static List<JSONObject> allMetadataOnline()
     {
         List<JSONObject> results = new ArrayList<JSONObject>();
         String response = "";
         HttpClient client = new DefaultHttpClient();
-        HttpGet anvatoOnlineRequest = new HttpGet("http://tkx2-prod.anvato.net/rest/v2/mcp/events/" + showName + "/metadata?anvack=anvato_scripps_app_web_prod_0837996dbe373629133857ae9eb72e740424d80a");
+        HttpGet anvatoOnlineRequest = new HttpGet("http://tkx2-prod.anvato.net/rest/v2/mcp/events/" + eventId + "/metadata?anvack=anvato_scripps_app_web_prod_0837996dbe373629133857ae9eb72e740424d80a");
         try
         {
             HttpResponse execute = client.execute(anvatoOnlineRequest);
@@ -116,31 +144,73 @@ public class AnvatoServices
 
         JSONObject episodeNameOnline = new JSONObject(response).getJSONObject("event").getJSONObject("custom_metadata_map");
 
-        if(episodeNameOnline.has("rovi_episode_title"))
+        if(!programTitleOnline.equals("Paid Programming") && episodeNameOnline.has("rovi_programming_show_type") && "Paid For".equals(episodeNameOnline.getString("rovi_programming_show_type")))
         {
-            episodeNameOnline.getString("rovi_episode_title");
-            String prepareEpisodeName = "{\"name\":\"rovi_episode_title\",\"value\":\"" + episodeNameOnline + "\"}";
+            programTitleOnline = "Paid Programming";
+            String prepareEpisodeName = "{\"name\":\"def_title\",\"value\":\"Paid Programming\"}";
+            JSONObject episodeNameOnlineJSON = new JSONObject(prepareEpisodeName);
+            results.add(episodeNameOnlineJSON);
+        }
+        if (episodeNameOnline.has("rovi_episode_title"))
+        {
+            String episodeName = episodeNameOnline.getString("rovi_episode_title");
+            String prepareEpisodeName = "{\"name\":\"rovi_episode_title\",\"value\":\"" + episodeName + "\"}";
             JSONObject episodeNameOnlineJSON = new JSONObject(prepareEpisodeName);
             results.add(episodeNameOnlineJSON);
         }
         else
         {
-            episodeNameOnline.getString("rovi_programming_show_type");
-            String prepareEpisodeName = "{\"name\":\"rovi_programming_show_type\",\"value\":\"" + episodeNameOnline + "\"}";
+            String prepareEpisodeName = "{\"name\":\"rovi_episode_title\",\"value\":\"" + programTitleOnline + "\"}";
             JSONObject episodeNameOnlineJSON = new JSONObject(prepareEpisodeName);
             results.add(episodeNameOnlineJSON);
         }
 
-        // String episodeNameOnline = new JSONObject(response).getJSONObject("event").getJSONObject("custom_metadata_map").getString("rovi_episode_title");
-        //String prepareEpisodeName = "{\"name\":\"rovi_episode_title\",\"value\":\"" + episodeNameOnline + "\"}";
-        //JSONObject episodeNameOnlineJSON = new JSONObject(prepareEpisodeName);
-        //results.add(episodeNameOnlineJSON);
-
-        String episodeDescriptionOnline = new JSONObject("event").getJSONObject("custom_metadata_map").getString("rovi_long_description");
-        String prepareDescription = "{\"name\":\"rovi_long_description\",\"value\":\"" + episodeDescriptionOnline + "\"}";
-        JSONObject episodeDescriptionJSON = new JSONObject(prepareDescription);
-        results.add(episodeDescriptionJSON);
-
+        if (episodeNameOnline.has("rovi_long_description"))
+        {
+            String episodeDescriptionOnline = new JSONObject(response).getJSONObject("event").getJSONObject("custom_metadata_map").getString("rovi_long_description");
+            String prepareDescription = "{\"name\":\"rovi_long_description\",\"value\":\"" + episodeDescriptionOnline + "\"}";
+            JSONObject episodeDescriptionJSON = new JSONObject(prepareDescription);
+            results.add(episodeDescriptionJSON);
+        }
+        else
+        {
+            String prepareDescription = "{\"name\":\"rovi_long_description\",\"value\":\"\"}";
+            JSONObject episodeDescriptionJSON = new JSONObject(prepareDescription);
+            results.add(episodeDescriptionJSON);
+        }
         return results;
+    }
+
+    public static String getUpNextMetadata(String response)
+    {
+        List<JSONObject> upNextResults = new ArrayList<JSONObject>();
+        Iterator<String> upNextRes = new JSONObject(response).getJSONObject("schedule").getJSONObject("next_event").getJSONObject("custom_metadata").keys();
+        JSONObject upNextCustomMetaData = new JSONObject(response).getJSONObject("schedule").getJSONObject("next_event").getJSONObject("custom_metadata");
+
+        while (upNextRes.hasNext())
+        {
+            String key = upNextRes.next();
+            upNextCustomMetaData.getJSONObject(key);
+            JSONObject resultSet = upNextCustomMetaData.getJSONObject(key);
+            upNextResults.add(resultSet);
+        }
+
+        //String upNextTitle = new JSONObject(response).getJSONObject("schedule").getJSONObject("next_event").getString("title");
+        String upNextTitle = "";
+        if("Paid For".equals(getMetadataByName(upNextResults,"rovi_programming_show_type")))
+        {
+             upNextTitle = "Paid Programming";
+/*            String prepareUpNextTitle = "{\"name\":\"next\",\"value\":\"" + upNextTitle + "\"}";
+            JSONObject upNextTitleJSON = new JSONObject(prepareUpNextTitle);
+            upNextResults.add(upNextTitleJSON);*/
+        }
+        else
+        {
+             upNextTitle = new JSONObject(response).getJSONObject("schedule").getJSONObject("next_event").getString("title");
+/*            String prepareUpNextTitle = "{\"name\":\"next\",\"value\":\"" + upNextTitle + "\"}";
+            JSONObject upNextTitleJSON = new JSONObject(prepareUpNextTitle);
+            upNextResults.add(upNextTitleJSON);*/
+        }
+        return upNextTitle;
     }
 }
